@@ -1,0 +1,8 @@
+GameProject {
+ ID "RSScriptingTutorial"
+ GUID "59912373C76ED129"
+ TITLE "RS_ScriptingTutorial"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}

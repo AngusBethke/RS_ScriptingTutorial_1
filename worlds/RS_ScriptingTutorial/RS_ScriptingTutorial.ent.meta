@@ -1,0 +1,15 @@
+MetaFileClass {
+ Name "{A2B51237AA6701C4}worlds/RS_ScriptingTutorial/RS_ScriptingTutorial.ent"
+ Configurations {
+  ENTResourceClass PC {
+  }
+  ENTResourceClass XBOX_ONE : PC {
+  }
+  ENTResourceClass XBOX_SERIES : PC {
+  }
+  ENTResourceClass PS4 : PC {
+  }
+  ENTResourceClass HEADLESS : PC {
+  }
+ }
+}
