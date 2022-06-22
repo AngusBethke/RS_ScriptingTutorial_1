@@ -1,0 +1,23 @@
+GenericEntity : "{0E564BA0ADE3B864}Prefabs/Systems/Arsenal/AmmoBoxes/AmmoBoxArsenal_Equipment_Base.et" {
+ ID "F0DBA538AC2A0552"
+ components {
+  MeshObject "{5872F0EB7FA40561}" {
+   Object "{62A30D148D0D93B0}Assets/Props/Military/AmmoBox/EquipmentBoxWooden_01/EquipmentBoxWooden_Equipment_01.xob"
+  }
+  RigidBody "{5872F0EB7DFB5A9D}" {
+   ResponseIndex "SmallDestructible"
+  }
+  SCR_ArsenalComponent "{589F01C9C8D4A475}" {
+   Enabled 0
+  }
+  SCR_FactionControlComponent "{58C2BD511E858EF5}" {
+   m_DefaultFaction "US"
+  }
+  SCR_RS_RandomCrateStorageComponent "{59AAFDAB3A0EB7DE}" {
+   m_eSupportedArsenalItemTypes 262142
+   m_eSupportedArsenalItemModes 126
+   m_eEditableAttributeGroups 30
+  }
+ }
+ coords 4571.872 71.543 8789.292
+}

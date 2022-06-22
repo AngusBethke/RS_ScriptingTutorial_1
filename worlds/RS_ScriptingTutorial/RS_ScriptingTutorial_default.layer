@@ -8,91 +8,26 @@ SCR_AIWorld : "{E0A05C76552E7F58}Prefabs/AI/SCR_AIWorld.et" {
  }
  coords 4575.278 71.454 8790.607
 }
-SCR_BaseGameMode GameMode_Plain1 : "{1B76F75A3175E85C}Prefabs/MP/Modes/Plain/GameMode_Plain.et" {
+PerceptionManager PerceptionManager1 : "{028DAEAD63E056BE}Prefabs/World/Game/PerceptionManager.et" {
+ coords 4581.714 71.358 8791.876
+}
+SCR_BaseGameMode Gamemode_RS_Test : "{1B76F75A3175E85C}Prefabs/MP/Modes/Plain/GameMode_Plain.et" {
  components {
   SCR_AutomaticRespawnHandlerComponent "{56B4EA4DA0EEFF85}" {
    m_iForcedFaction 0
   }
  }
  coords 4572.21 72.113 8784.151
- userScript "	protected void AISpawner(string spawnGroup, vector spawnPosition, string waypointType, vector waypointPosition)"\
- "	{"\
- "		// Generate the resource "\
- "		Resource resource = GenerateAndValidateResource(spawnGroup);"\
- "		"\
- "		if (!resource)"\
- "		{"\
- "			Print((\"[AI Spawner] Unable able to load resource for the spawn group: \" + spawnGroup), LogLevel.ERROR);"\
- "			return;"\
- "		}"\
- "		"\
- "		// Generate the spawn parameters and spawn the group "\
- "		SCR_AIGroup group = SCR_AIGroup.Cast(GetGame().SpawnEntityPrefab(resource, null, GenerateSpawnParameters(spawnPosition)));"\
- "		"\
- "		if (!group)"\
- "		{"\
- "			Print(\"[AI Spawner] Unable to spawn group!\", LogLevel.ERROR);"\
- "			return;"\
- "		}"\
- "		"\
- "		// Create a waypoint for this group"\
- "		CreateWaypoint(group, waypointType, waypointPosition);"\
- "	}"\
+ userScript "	private ref SCR_RS_AISpawner m_RSAISpawner;"\
  "	"\
- "	protected void CreateWaypoint(SCR_AIGroup group, string waypointType, vector waypointPosition)"\
+ "	SCR_RS_AISpawner GetAISpawner()"\
  "	{"\
- "		// Generate the resource "\
- "		Resource resource = GenerateAndValidateResource(waypointType);"\
- "		"\
- "		if (!resource)"\
- "		{"\
- "			Print((\"[Create Waypoint] Unable able to load resource for the waypoint: \" + waypointType), LogLevel.ERROR);"\
- "			return;"\
- "		}"\
- "		"\
- "		// Generate the spawn parameters and create the waypoint "\
- "		AIWaypoint waypoint = AIWaypoint.Cast(GetGame().SpawnEntityPrefab(resource, null, GenerateSpawnParameters(waypointPosition)));"\
- "		"\
- "		if (!waypoint)"\
- "		{"\
- "			Print(\"[Create Waypoint] Unable to create waypoint!\", LogLevel.ERROR);"\
- "			return;"\
- "		}"\
- "		"\
- "		// Assign the waypoint to the group "\
- "		group.AddWaypoint(waypoint);"\
- "	}"\
- "	"\
- "	protected Resource GenerateAndValidateResource(string resourceToLoad)"\
- "	{"\
- "		// Load the resource "\
- "		Resource resource = Resource.Load(resourceToLoad);"\
- "		"\
- "		// Validate the prefab and show an appropriate error if invalid "\
- "		if (!resource.IsValid())"\
- "		{"\
- "			Print((\"[Generate And Validate Resource] Resource is invalid: \" + resourceToLoad), LogLevel.ERROR);"\
- "			return null;"\
- "		}"\
- "		"\
- "		// Return the resource "\
- "		return resource;"\
- "	}"\
- "	"\
- "	protected EntitySpawnParams GenerateSpawnParameters(vector position)"\
- "	{"\
- "		// Create a new set of spawn parameters "\
- "		EntitySpawnParams params = EntitySpawnParams();"\
- "		params.TransformMode = ETransformMode.WORLD;"\
- "		"\
- "		// Assign the position to those parameters "\
- "		params.Transform[3] = position;"\
- "		"\
- "		// Return this set of spawn parameters"\
- "		return params;"\
+ "		return m_RSAISpawner;"\
  "	}"
  OnGameStart ""\
  "		super.OnGameStart();"\
+ "		"\
+ "		m_RSAISpawner = new SCR_RS_AISpawner();"\
  "		"\
  "		// String variables for our resources "\
  "		string spawnGroup = \"{DDF3799FA1387848}Prefabs/Groups/BLUFOR/Group_US_RifleSquad.et\";"\
@@ -103,7 +38,7 @@ SCR_BaseGameMode GameMode_Plain1 : "{1B76F75A3175E85C}Prefabs/MP/Modes/Plain/Gam
  "		IEntity waypointPosition = GetGame().GetWorld().FindEntityByName(\"US_AI_Waypoint_Move_1\");"\
  "		"\
  "		// Execute the AI spawning using a delayed call"\
- "		GetGame().GetCallqueue().CallLater(AISpawner, 10000, false, spawnGroup, spawnPosition.GetOrigin(), waypointType, waypointPosition.GetOrigin());"\
+ "		GetGame().GetCallqueue().CallLater(m_RSAISpawner.AISpawner, 10000, false, spawnGroup, spawnPosition.GetOrigin(), waypointType, waypointPosition.GetOrigin());"\
  "	"
 }
 TagManager : "{2FA9E172CAB1857A}Prefabs/MP/Managers/TagManager.et" {
@@ -115,6 +50,34 @@ ScriptedChatEntity : "{536D80EB494DDC43}Prefabs/MP/Campaign/CampaignMPChatEntity
 SCR_FactionManager FactionManager_USxUSSR1 : "{589540B35EBA8CDC}Prefabs/MP/Managers/Factions/FactionManager_USxUSSR.et" {
  coords 4574.789 71.859 8786.838
  Factions {
+  SCR_Faction "{56B2B46E999BF3BF}" {
+   m_ArsenalConfig SCR_ArsenalItemListConfig "{591953AE512D1A47}" {
+    m_aArsenalItems {
+     SCR_ArsenalItem "{56CAB9740A0D34CB}" {
+      m_ItemChanceToSpawn 100
+      m_ItemMaxSpawnCount 25
+     }
+     SCR_ArsenalItem "{56CAB9779954270C}" {
+      m_ItemMaxSpawnCount 10
+     }
+     SCR_ArsenalItem "{56CAB97799B945D7}" {
+      m_ItemMaxSpawnCount 10
+     }
+     SCR_ArsenalItem "{56CAB97F91BECA38}" {
+      m_ItemMaxSpawnCount 5
+     }
+     SCR_ArsenalItem "{56CAB97F91831C99}" {
+      m_ItemMaxSpawnCount 5
+     }
+     SCR_ArsenalItem "{56CAB97799966670}" {
+      m_ItemMaxSpawnCount 5
+     }
+     SCR_ArsenalItem "{56CAB97799F8DF09}" {
+      m_ItemMaxSpawnCount 5
+     }
+    }
+   }
+  }
   SCR_Faction "{56B2B46E9AF80999}" {
    m_bIsPlayable 0
   }
@@ -123,8 +86,44 @@ SCR_FactionManager FactionManager_USxUSSR1 : "{589540B35EBA8CDC}Prefabs/MP/Manag
 RadioManagerEntity : "{B8E09FAB91C4ECCD}Prefabs/Radio/RadioManager.et" {
  coords 4576.973 71.733 8788.166
 }
+SCR_FactionControlTriggerEntity Trigger_Ambush_USSR_1 {
+ coords 4272.486 25.228 9082.709
+ TriggerShapeType Sphere
+ SphereRadius 30
+ TriggerActivationType "First change"
+ PeriodicQueries 1
+ OnActivate ""\
+ "		super.OnActivate(ent);"\
+ "		"\
+ "		SCR_RS_AISpawner aiSpawner = Gamemode_RS_Test_Class.Cast(GetGame().GetGameMode()).GetAISpawner();"\
+ "		"\
+ "		// String variables for our resources "\
+ "		string spawnGroup = \"{E552DABF3636C2AD}Prefabs/Groups/OPFOR/Group_USSR_RifleSquad.et\";"\
+ "		string waypointType = \"{750A8D1695BD6998}Prefabs/AI/Waypoints/AIWaypoint_Move.et\";"\
+ "		"\
+ "		// Entity variables for our positions "\
+ "		IEntity spawnPosition = GetGame().GetWorld().FindEntityByName(\"USSR_AI_SpawnPoint_1\");"\
+ "		IEntity waypointPosition = GetGame().GetWorld().FindEntityByName(\"US_AI_Waypoint_Move_1\");"\
+ "		"\
+ "		// Execute the AI spawning using a delayed call"\
+ "		GetGame().GetCallqueue().CallLater(aiSpawner.AISpawner, 5000, false, spawnGroup, spawnPosition.GetOrigin(), waypointType, waypointPosition.GetOrigin());"\
+ "	"
+ m_sOwnerFactionKey "US"
+ m_fFriendlyRatioLimit 1
+}
 HitRegistrationManager HitRegManager1 : "{0EDA3D48791120DD}Prefabs/MP/HitRegManager.et" {
  coords 4577.8 71.509 8789.404
+}
+$grp GenericEntity : "{24ABB779EBEFB281}Prefabs/Systems/Arsenal/AmmoBoxes/US/AmmoBoxArsenal_Random_US.et" {
+ {
+  coords 4572.95 71.75 8787.573
+ }
+ {
+  coords 4570.621 71.724 8787.475
+ }
+ {
+  coords 4571.686 71.947 8785.593
+ }
 }
 SCR_SpawnPoint : "{4FEA25583D0975F7}Prefabs/MP/Spawning/SpawnPoint_USSR.et" {
  coords 4578.796 71.181 8793.327
@@ -138,6 +137,9 @@ $grp GenericEntity : "{934A3C3A870634DC}PrefabsEditable/System/E_Comment.et" {
  }
  US_AI_Waypoint_Move_1 {
   coords 4273.286 25.293 9081.037
+ }
+ USSR_AI_SpawnPoint_1 {
+  coords 4429.859 28.298 9069.569
  }
 }
 SCR_LoadoutManager : "{97EF4C1A41F63DDB}Prefabs/MP/Managers/Loadouts/LoadoutManager_USxUSSR.et" {
